@@ -1,3 +1,4 @@
+const api = 'https://tabulas.herokuapp.com/api/';
 const params = new URLSearchParams(window.location.search);
 
 const project = params.get('project');
@@ -8,11 +9,11 @@ let langs; // project only
 let translations = {}; // repo only
 
 if (project) {
-  fetchJson('api').then(data => {
+  fetchJson(api).then(data => {
     $('#title').text(data[project]);
   });
 
-  fetchJson('api/' + project).then(data => {
+  fetchJson(api + project).then(data => {
     console.log(data);
     langs = data.langs;
     sourceLang = params.get('source') || data.source;
@@ -27,7 +28,7 @@ if (project) {
   targetLang = params.get('target') || sourceLang;
   loadRepoTranslations();
 } else {
-  console.err("No project or repository specified.");
+  console.error("No project or repository specified.");
 }
 
 function loadTranslations() {
@@ -39,8 +40,8 @@ function loadTranslations() {
 }
 
 async function loadProjectTranslations() {
-  let source = await fetchJson('api/' + project + '/' + sourceLang);
-  let [err, target] = await to(fetchJson('api/' + project + '/' + targetLang));
+  let source = await fetchJson(api + project + '/' + sourceLang);
+  let [err, target] = await to(fetchJson(api + project + '/' + targetLang));
   if (err) {
     target = {};
   }
@@ -138,7 +139,7 @@ function onBlur(e) {
     toText($(e.target).parent());
   }
   if (project) {
-    fetch('api/' + project + '/' + targetLang + '/' + key + '/' + value);
+    fetch(api + project + '/' + targetLang + '/' + key + '/' + value);
   } else {
     translations[key] = value;
   }
@@ -146,7 +147,7 @@ function onBlur(e) {
 
 async function exportTarget() {
   if (project) {
-    translations = await fetchJson('api/' + project + '/' + targetLang);
+    translations = await fetchJson(api + project + '/' + targetLang);
   }
   let data = JSON.stringify(translations, Object.keys(translations).sort(), 2);
   var blob = new Blob([data], {
