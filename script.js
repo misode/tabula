@@ -1,6 +1,8 @@
 const api = 'https://tabulas.herokuapp.com/api/';
 const params = new URLSearchParams(window.location.search);
 
+const editIcon = 'https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/pencil.svg';
+
 const project = params.get('project');
 const repo = params.get('repo');
 let sourceLang;
@@ -97,6 +99,7 @@ function getTranslation(key, source, target) {
     toInput($translation.find('[data-insert="target"]').parent());
     $translation.find('textarea').val('');
   } else {
+    $translation.find('[data-insert="target"]').append('<img src="' + editIcon + '" alt="" class="ml-1 mb-1">');
     $translation.find('[data-insert="target"]').click(clickEdit);
   }
   $translation.attr('data-key', key);
@@ -104,10 +107,12 @@ function getTranslation(key, source, target) {
 }
 
 function toInput(el) {
-  let $textarea = $('<textarea type="text" class="form-control w-100 code" style="height: 42px; overflow: hidden"></textarea>').val($(el).text());
+  let translation = $(el).closest('span').text();
+  console.log(translation);
+  let $textarea = $('<textarea type="text" class="form-control w-100 code" style="height: 42px; overflow: hidden"></textarea>').val(translation);
   $textarea.keydown(e => onEnter(e))
   $textarea.on('blur', onBlur);
-  $(el).parent().html($textarea);
+  $(el).closest('span').parent().html($textarea);
   return $textarea;
 }
 
@@ -115,6 +120,7 @@ function toText(el) {
   let $span = $('<span class="clickToEdit" style="cursor: pointer;"></span>');
   $span.click(clickEdit);
   $span.text($(el).find('textarea').val());
+  $span.append('<img src="' + editIcon + '" alt="" class="ml-1 mb-1">');
   $(el).html($span);
   return $span;
 }
