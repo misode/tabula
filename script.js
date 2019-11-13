@@ -2,7 +2,7 @@ const params = new URLSearchParams(window.location.search);
 
 let api = 'https://tabulas.herokuapp.com/api/';
 if (params.get('local') === 'true') {
-  api = 'localhost:3000/api/';
+  api = 'http://localhost:3000/api/';
 }
 
 const editIcon = 'https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/pencil.svg';
