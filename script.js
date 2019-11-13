@@ -16,7 +16,6 @@ if (project) {
   });
 
   fetchJson(api + project).then(data => {
-    console.log(data);
     langs = data.langs;
     sourceLang = params.get('source') || data.source;
     targetLang = params.get('target') || sourceLang;
@@ -96,7 +95,7 @@ function getTranslation(key, source, target) {
   $translation.find('[data-insert="source"]').text(source);
   $translation.find('[data-insert="target"]').text(target);
   if (target === undefined) {
-    toInput($translation.find('[data-insert="target"]').parent());
+    toInput($translation.find('[data-insert="target"]'));
     $translation.find('textarea').val('');
   } else {
     $translation.find('[data-insert="target"]').append('<img src="' + editIcon + '" alt="" class="ml-1 mb-1">');
@@ -108,7 +107,6 @@ function getTranslation(key, source, target) {
 
 function toInput(el) {
   let translation = $(el).closest('span').text();
-  console.log(translation);
   let $textarea = $('<textarea type="text" class="form-control w-100 code" style="height: 42px; overflow: hidden"></textarea>').val(translation);
   $textarea.keydown(e => onEnter(e))
   $textarea.on('blur', onBlur);
