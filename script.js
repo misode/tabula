@@ -14,6 +14,10 @@ let targetLang;
 let langs; // project only
 let translations = {}; // repo only
 
+$('#importButton').on('click', () => {
+  $('#targetInput').trigger('click');
+});
+
 if (project) {
   fetchJson(api).then(data => {
     $('#title').text(data[project]);
@@ -55,6 +59,7 @@ async function loadProjectTranslations() {
   $('#sourceLang').text(langs[sourceLang]);
   $('#targetLang').text(langs[targetLang]);
   $('#targetSelect').val(targetLang);
+  $('#importButton').addClass('d-none');
 
   $('#tableSpinner').addClass('d-none');
   $('table').removeClass('d-none');
@@ -151,6 +156,22 @@ function onBlur(e) {
   } else {
     translations[key] = value;
   }
+}
+
+function fileInput(files) {
+  if (!files[0].name.match(/\.json$/)) return;
+
+  const reader = new FileReader();
+  reader.onload = () => importTarget(reader);
+  reader.readAsText(files[0]);
+}
+
+async function importTarget(reader) {
+  const url = 'https://raw.githubusercontent.com/' + params.get('repo') + '/';
+
+  let source = await fetchJson(url + '/' + sourceLang + '.json');
+  translations = JSON.parse(reader.result);
+  updateTranslations(source, translations);
 }
 
 async function exportTarget() {

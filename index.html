@@ -31,6 +31,8 @@
       </select>
       <label class="my-1 mr-2" id="targetLabel" for="targetSelect">Language</label>
       <select class="custom-select mr-auto" id="targetSelect" onchange="changeTarget()"></select>
+      <button id="importButton" class="btn btn-primary my-1 mr-2">Import</button>
+      <input id="targetInput" onchange="fileInput(this.files)" class="d-none" type="file" accept=".json" name="import" />
       <button onclick="exportTarget()" class="btn btn-primary my-1">Export</button>
     </div>
     <table class="table table-striped mt-3 d-none" style="table-layout: fixed;">
