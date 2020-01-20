@@ -36,6 +36,7 @@ if (project) {
   sourceLang = params.get('source');
   targetLang = params.get('target') || sourceLang;
   loadRepoTranslations();
+  $('#loadLSButton').show()
 } else {
   console.error("No project or repository specified.");
 }
@@ -155,6 +156,7 @@ function onBlur(e) {
     fetch(api + project + '/' + targetLang + '/' + key + '/' + value);
   } else {
     translations[key] = value;
+    saveLocalStorage();
   }
 }
 
@@ -190,6 +192,27 @@ function changeTarget() {
   $('#tableSpinner').removeClass('d-none');
   $('table').addClass('d-none');
   loadProjectTranslations();
+}
+
+async function loadLocalStorage() {
+  if (!project){
+    const value = localStorage.getItem(`${repo}|${targetLang}`);
+    if (value) {
+      const url = 'https://raw.githubusercontent.com/' + params.get('repo') + '/';
+      const source = await fetchJson(url + '/' + sourceLang + '.json');
+      const target = JSON.parse(value);
+      translations = target;
+      updateTranslations(source, target);
+    } else {
+      alert('No local storage found!');
+    }
+  }
+}
+
+async function saveLocalStorage() {
+  if (!project){
+    localStorage.setItem(`${repo}|${targetLang}`, JSON.stringify(translations));
+  }
 }
 
 async function fetchJson(url) {
