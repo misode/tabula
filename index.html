@@ -22,16 +22,14 @@
     <span id="title" class="navbar-brand ml-auto mr-auto"></span>
   </nav>
   <div class="container">
-    <div class="form-inline mt-4">
+    <div class="form-inline mt-4 w-100">
       <label class="my-1 mr-2" for="showSelect">Show</label>
-      <select class="custom-select mr-3" id="showSelect" onchange="loadTranslations()">
+      <select class="custom-select mr-auto" id="showSelect" onchange="loadTranslations()">
         <option value="all">All</option>
         <option value="translated">Translated</option>
         <option value="untranslated">Untranslated</option>
       </select>
-      <label class="my-1 mr-2" id="targetLabel" for="targetSelect">Language</label>
-      <select class="custom-select mr-auto" id="targetSelect" onchange="changeTarget()"></select>
-      <button id="loadLSButton" style="display:none;" onclick="loadLocalStorage()" class="btn btn-primary mr-2">Load Local Storage</button>
+      <button id="loadLSButton" onclick="loadLocalStorage()" class="btn btn-primary my-1 mr-2">Load Local Storage</button>
       <button id="importButton" class="btn btn-primary my-1 mr-2">Import from File</button>
       <input id="targetInput" onchange="fileInput(this.files)" class="d-none" type="file" accept=".json" name="import" />
       <button onclick="exportTarget()" class="btn btn-primary my-1">Export to File</button>
